@@ -1,0 +1,29 @@
+# YAML is case sensitive
+# use spaces not a tab
+apiVersion: apps/v1  # specify api to use for deployment
+kind: Deployment  # kind of service/object you want to create
+metadata:
+  name: sparta-app # name the deployment
+spec:
+  selector:
+    matchLabels:
+      app: sparta-app  # look for this label/tag to match with k8 service
+  # create a replica set of this with instances/pods
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sparta-app
+    spec:
+      containers:
+      - name: sparta-app
+        image: nickmitic/test1:v1 # the image you created to run nginx in a container
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: mongodb://db-service:27017/posts
+        command: [ "sh", "-c", "node seeds/seed.js && node app.js" ]
+        resources:
+          requests:
+            cpu: 200m
