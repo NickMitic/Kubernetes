@@ -1,7 +1,11 @@
 # Setting up the app and db with persistent storage using K8s
 
 ## Set-up and Diagram
+The yaml files in the folders define a set-up for the sparta test app and db with varying features. The most basic set-up creates the app and db and connects them, this must be manually seeded. There is also an auto-seeded version. Next, we add a persistent volume claim (PVC), so data is not lost if the db containers go down. Lastly, we add horizontal pod autoscaling (HPA) which will increase the size of the replica set if average CPU usage goes goes above a threshold.
 
+A depiction of the app, db and PVC may be seen below.
+
+![diagram](k8s.png)
 ## The YAML files
 
 ### Deployments
@@ -111,6 +115,7 @@ spec:
     targetPort: 27017 # default mongodb port
 ```
 * Note that we **did not** make this service a nodeport as there is no need to expose this to localhost/the internet
+  
 ### PVC
 This makes a request to the cluster for storage, where our volume will go.
 ```yaml
